@@ -12,7 +12,8 @@ import {
   FiSettings,
   FiLogOut,
   FiMenu,
-  FiX
+  FiX,
+  FiMessageSquare
 } from "react-icons/fi";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -95,6 +96,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'الفئات', icon: FiPackage, href: '/admin/categories' },
     { name: 'الطلبات', icon: FiShoppingBag, href: '/admin/orders' },
     { name: 'المستخدمين', icon: FiUsers, href: '/admin/users' },
+    { name: 'الرسائل', icon: FiMessageSquare, href: '/admin/contacts' },
   ];
 
   // If login page, render without layout

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import { contactAPI } from '../../lib/api';
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -17,15 +18,21 @@ export default function ContactPage() {
         e.preventDefault();
         setLoading(true);
 
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            const res = await contactAPI.create(formData);
+            if (res && res.success) {
+                setSuccess(true);
+                setFormData({ name: '', email: '', subject: '', message: '' });
+                setTimeout(() => setSuccess(false), 5000);
+            } else {
+                alert('حدث خطأ. حاول مرة أخرى.');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('حدث خطأ أثناء الإرسال.');
+        } finally {
             setLoading(false);
-            setSuccess(true);
-            setFormData({ name: '', email: '', subject: '', message: '' });
-
-            // Clear success message after 5 seconds
-            setTimeout(() => setSuccess(false), 5000);
-        }, 1500);
+        }
     };
 
     const contactInfo = [

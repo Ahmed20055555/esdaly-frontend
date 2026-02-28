@@ -13,7 +13,8 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
-  FiMessageSquare
+  FiMessageSquare,
+  FiGlobe
 } from "react-icons/fi";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -97,6 +98,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'الطلبات', icon: FiShoppingBag, href: '/admin/orders' },
     { name: 'المستخدمين', icon: FiUsers, href: '/admin/users' },
     { name: 'الرسائل', icon: FiMessageSquare, href: '/admin/contacts' },
+    { name: 'العودة للمتجر', icon: FiGlobe, href: '/' },
   ];
 
   // If login page, render without layout
@@ -187,6 +189,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               )}
             </button>
             <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="hidden sm:flex items-center gap-2 text-sm text-[#0B3D2E] bg-gray-50 hover:bg-gray-100 border border-gray-200 px-3 py-1.5 rounded-md transition-colors"
+              >
+                العودة للرئيسية
+              </Link>
               <span className="text-sm text-gray-600">مرحباً، {user?.name || 'Admin'}</span>
               <div className="w-8 h-8 bg-[#0B3D2E] rounded-full flex items-center justify-center text-white text-sm font-semibold">
                 {user?.name?.charAt(0) || 'A'}

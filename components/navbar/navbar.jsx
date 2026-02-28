@@ -61,7 +61,7 @@ export default function Navbar() {
     { name: 'اتصل بنا', href: '/contact' },
     { name: 'لوحه التحكم', href: '/admin' },
   ];
-  
+
   return (
     <nav
       className={`
@@ -102,15 +102,15 @@ export default function Navbar() {
             </div>
 
             <div className="flex justify-center items-center gap-1.5 min-[280px]:gap-2">
-              
-                <Image
-                  src="/foto/navbar-fotoo.png"
-                  alt="logo"
-                  width={32}
-                  height={32}
-                  priority
-                  className="object-cover w-8 h-8 min-[280px]:w-10 min-[280px]:h-10 rounded-full"
-                />
+
+              <Image
+                src="/foto/navbar-fotoo.png"
+                alt="logo"
+                width={32}
+                height={32}
+                priority
+                className="object-cover w-8 h-8 min-[280px]:w-10 min-[280px]:h-10 rounded-full"
+              />
 
               <div className="flex justify-center">
                 <span className="
@@ -142,14 +142,6 @@ export default function Navbar() {
                   <FiUser className="w-5 h-5" />
                 </button>
                 <button
-                  onClick={() => router.push('/orders')}
-                  className="p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200"
-                  aria-label="Orders"
-                  title="طلباتي"
-                >
-                  <FiPackage className="w-5 h-5" />
-                </button>
-                <button
                   onClick={() => {
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
@@ -176,17 +168,17 @@ export default function Navbar() {
 
             {/* Mobile Icons & Menu Button */}
             <div className="flex gap-1 min-[280px]:gap-1.5 items-center">
-              <button 
+              <button
                 onClick={() => router.push('/search')}
-                className="cursor-pointer p-1 min-[280px]:p-1.5 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200" 
+                className="cursor-pointer p-1 min-[280px]:p-1.5 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200"
                 aria-label="بحث"
                 title="بحث"
               >
                 <FiSearch className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5" />
               </button>
-              <button 
+              <button
                 onClick={() => router.push('/favorites')}
-                className="cursor-pointer p-1 min-[280px]:p-1.5 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative" 
+                className="cursor-pointer p-1 min-[280px]:p-1.5 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative"
                 aria-label="Favorites"
               >
                 <FiHeart className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5" />
@@ -196,9 +188,9 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-              <button 
+              <button
                 onClick={() => router.push('/cart')}
-                className="p-1 min-[280px]:p-1.5 cursor-pointer text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative" 
+                className="p-1 min-[280px]:p-1.5 cursor-pointer text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative"
                 aria-label="Cart"
               >
                 <FiShoppingCart className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5" />
@@ -262,16 +254,6 @@ export default function Navbar() {
                 <FiUser className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5 flex-shrink-0" />
                 <span className="truncate">الملف الشخصي</span>
               </button>
-              <button
-                onClick={() => {
-                  router.push('/orders');
-                  setIsOpen(false);
-                }}
-                className="w-full flex items-center gap-2 min-[280px]:gap-3 px-3 min-[280px]:px-4 py-2 min-[280px]:py-2.5 text-sm min-[280px]:text-base text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200"
-              >
-                <FiPackage className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5 flex-shrink-0" />
-                <span className="truncate">طلباتي</span>
-              </button>
               <div className="px-3 min-[280px]:px-4 py-1.5 min-[280px]:py-2 text-xs min-[280px]:text-sm text-white/80 truncate">{user.name}</div>
               <button
                 onClick={() => {
@@ -302,12 +284,12 @@ export default function Navbar() {
 
           {/* Mobile Icons in Menu */}
           <div className="flex items-center justify-center gap-3 min-[280px]:gap-4 pt-2 min-[280px]:pt-3 border-t border-white/10 mt-2">
-            <button 
+            <button
               onClick={() => {
                 router.push('/favorites');
                 setIsOpen(false);
               }}
-              className="p-1.5 min-[280px]:p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative" 
+              className="p-1.5 min-[280px]:p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative"
               aria-label="Favorites"
             >
               <FiHeart className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5" />
@@ -317,12 +299,12 @@ export default function Navbar() {
                 </span>
               )}
             </button>
-            <button 
+            <button
               onClick={() => {
                 router.push('/cart');
                 setIsOpen(false);
               }}
-              className="p-1.5 min-[280px]:p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative" 
+              className="p-1.5 min-[280px]:p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 relative"
               aria-label="Cart"
             >
               <FiShoppingCart className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5" />

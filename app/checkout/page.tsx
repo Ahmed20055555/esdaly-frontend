@@ -183,7 +183,7 @@ export default function CheckoutPage() {
 
       if (response.success) {
         // Clear cart only if NOT test mode
-
+        dispatch(clearCart());
 
         // direct to order confirmation
         router.push(`/orders/${response.order._id}`);

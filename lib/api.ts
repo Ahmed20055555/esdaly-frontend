@@ -76,7 +76,11 @@ const apiRequest = async (
   } catch (error: any) {
     // Handle network errors
     if (error.message === 'Failed to fetch' || error.name === 'TypeError' || error.message?.includes('fetch')) {
-      throw new Error('لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تشغيل MongoDB\n3. تشغيل Seeder: npm run seed:admin');
+      const isDev = process.env.NODE_ENV === 'development';
+      throw new Error(isDev
+        ? 'لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تشغيل MongoDB\n3. تشغيل Seeder: npm run seed:admin'
+        : `لا يمكن الاتصال بالخادم. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.`
+      );
     }
     throw error;
   }
@@ -196,7 +200,11 @@ export const productsAPI = {
     } catch (error: any) {
       // معالجة أخطاء الشبكة
       if (error.message === 'Failed to fetch' || error.name === 'TypeError' || error.message?.includes('fetch')) {
-        throw new Error('لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تشغيل MongoDB\n3. تسجيل الدخول كـ Admin');
+        const isDev = process.env.NODE_ENV === 'development';
+        throw new Error(isDev
+          ? 'لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تشغيل MongoDB\n3. تسجيل الدخول كـ Admin'
+          : 'لا يمكن الاتصال بالخادم. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.'
+        );
       }
       throw error;
     }

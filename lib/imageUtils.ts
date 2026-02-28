@@ -15,7 +15,7 @@ export const getImageUrl = (imagePath: string | undefined | null): string => {
   }
 
   // الحصول على API URL من متغيرات البيئة
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005';
   const baseUrl = API_URL.replace('/api', ''); // إزالة /api إذا كان موجوداً
 
   // إذا كان مسار نسبي يبدأ بـ /
@@ -42,7 +42,7 @@ export const getFirstImageUrl = (images: any[] | undefined | null, index: number
   }
 
   let imagePath: string;
-  
+
   if (typeof targetImage === 'string') {
     imagePath = targetImage.trim();
   } else if (targetImage?.url) {
@@ -61,6 +61,6 @@ export const getFirstImageUrl = (images: any[] | undefined | null, index: number
   }
 
   const fullUrl = getImageUrl(imagePath);
-  
+
   return fullUrl;
 };

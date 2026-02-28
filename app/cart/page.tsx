@@ -26,7 +26,7 @@ export default function CartPage() {
         if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://') && !imageUrl.startsWith('/')) {
           imageUrl = getImageUrl(imageUrl);
         } else if (imageUrl.startsWith('/')) {
-          const origin = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/api\/?$/, '');
+          const origin = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api').replace(/\/api\/?$/, '');
           imageUrl = `${origin}${imageUrl}`;
         }
 

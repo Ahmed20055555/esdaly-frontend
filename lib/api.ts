@@ -1,9 +1,9 @@
 // API Configuration (يُستخدم محلياً وعند الرفع حسب NEXT_PUBLIC_API_URL)
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api';
 /** رابط الـ API للاستخدام في fetch (مثلاً في الأدمن) */
 export const API_BASE_URL = API_URL;
 /** أصل الخادم بدون /api (لصور المنتجات) */
-export const API_ORIGIN = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/api\/?$/, '');
+export const API_ORIGIN = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api').replace(/\/api\/?$/, '');
 
 // Helper function to get auth token
 const getAuthToken = () => {
@@ -76,7 +76,7 @@ const apiRequest = async (
   } catch (error: any) {
     // Handle network errors
     if (error.message === 'Failed to fetch' || error.name === 'TypeError' || error.message?.includes('fetch')) {
-      throw new Error('لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5000\n2. تشغيل MongoDB\n3. تشغيل Seeder: npm run seed:admin');
+      throw new Error('لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تشغيل MongoDB\n3. تشغيل Seeder: npm run seed:admin');
     }
     throw error;
   }
@@ -196,7 +196,7 @@ export const productsAPI = {
     } catch (error: any) {
       // معالجة أخطاء الشبكة
       if (error.message === 'Failed to fetch' || error.name === 'TypeError' || error.message?.includes('fetch')) {
-        throw new Error('لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5000\n2. تشغيل MongoDB\n3. تسجيل الدخول كـ Admin');
+        throw new Error('لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تشغيل MongoDB\n3. تسجيل الدخول كـ Admin');
       }
       throw error;
     }

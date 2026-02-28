@@ -202,7 +202,7 @@ export default function CheckoutPage() {
       let errorMessage = "حدث خطأ أثناء إنشاء الطلب";
 
       if (error.message?.includes('network') || error.message?.includes('fetch') || error.message?.includes('Failed to fetch')) {
-        errorMessage = "لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5000\n2. تسجيل الدخول كـ User";
+        errorMessage = "لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تسجيل الدخول كـ User";
       } else if (error.message?.includes('401') || error.message?.includes('unauthorized')) {
         errorMessage = "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى";
         localStorage.removeItem("token");

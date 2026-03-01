@@ -66,8 +66,9 @@ export default function NewCategoryPage() {
       } else {
         const errorMsg = data.error || data.message || 'حدث خطأ أثناء إنشاء الفئة';
         const details = data.details ? `\nالتفاصيل: ${data.details}` : '';
+        const hint = data.hint ? `\n💡 تلميح: ${data.hint}` : '';
         const full = data.fullError ? `\nخطأ مفصل: ${JSON.stringify(data.fullError, null, 2)}` : '';
-        alert(`${errorMsg}${details}${full}`);
+        alert(`${errorMsg}${details}${hint}${full}`);
       }
     } catch (error: any) {
       console.error('Error creating category:', error);

@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { FiSearch, FiFilter, FiShoppingCart, FiHeart, FiArrowRight, FiX } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { productsAPI } from "@/lib/api";
 import { useDispatch } from "react-redux";
 
-export default function SearchPage() {
+function SearchContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const dispatch = useDispatch();
@@ -155,5 +155,17 @@ export default function SearchPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-gray-50 pt-32 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B3D2E]"></div>
+            </div>
+        }>
+            <SearchContent />
+        </Suspense>
     );
 }

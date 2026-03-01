@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FiMail, FiLock, FiArrowRight, FiGithub } from "react-icons/fi";
@@ -9,7 +9,7 @@ import { authAPI } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
 import { GoogleLogin } from "@react-oauth/google";
 
-export default function LoginPage() {
+function LoginContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const redirectParams = searchParams ? searchParams.get("redirect") : null;
@@ -235,5 +235,17 @@ export default function LoginPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="w-12 h-12 border-4 border-[#0B3D2E] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        }>
+            <LoginContent />
+        </Suspense>
     );
 }

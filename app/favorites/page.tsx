@@ -4,8 +4,7 @@ import { FiHeart, FiShoppingCart, FiX, FiArrowRight } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-// Assuming favorites slice exists and has removeFromFavorites action
-// import { removeFromFavorites } from "@/store/slices/favoritesSlice";
+import { getFirstImageUrl } from "../../lib/imageUtils";
 
 export default function FavoritesPage() {
     const router = useRouter();
@@ -70,9 +69,11 @@ export default function FavoritesPage() {
                                     onClick={() => router.push(`/product/${product.id || product._id}`)}
                                 >
                                     <Image
-                                        src={product.images?.[0]?.url || "/foto/placeholder.png"}
+                                        src={product.image || getFirstImageUrl(product.images)}
                                         alt={product.name}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 25vw"
+                                        unoptimized
                                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                                     />
                                     <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
@@ -93,12 +94,6 @@ export default function FavoritesPage() {
                                             className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-colors text-sm"
                                         >
                                             التفاصيل
-                                        </button>
-                                        <button
-                                            onClick={() => dispatch({ type: "cart/addToCart", payload: { ...product, id: product.id || product._id, quantity: 1 } })}
-                                            className="p-2.5 bg-[#0B3D2E] text-white rounded-xl hover:bg-[#082d22] transition-colors shadow-lg shadow-green-900/10"
-                                        >
-                                            <FiShoppingCart className="w-5 h-5" />
                                         </button>
                                     </div>
                                 </div>

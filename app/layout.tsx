@@ -5,6 +5,7 @@ import './globals.css'
 import ReduxProvider from '@/store/provider'
 import { ToastProvider } from '@/context/ToastContext'
 import ConditionalLayout from './conditional-layout'
+import WhatsAppButton from '@/components/whatsapp-button/WhatsAppButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,6 +26,7 @@ export default function RootLayout({
                     <ToastProvider>
                         <ConditionalLayout>
                             {children}
+                            <WhatsAppButton />
                         </ConditionalLayout>
                     </ToastProvider>
                 </ReduxProvider>

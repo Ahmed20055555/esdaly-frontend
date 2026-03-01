@@ -18,16 +18,25 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData));
-      } catch (e) {
+    const checkUser = () => {
+      const token = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
+      if (token && userData) {
+        try {
+          setUser(JSON.parse(userData));
+        } catch (e) {
+          setUser(null);
+        }
+      } else {
         setUser(null);
       }
-    }
+    };
+
+    checkUser();
+
+    // Listen for custom auth event and localStorage changes
+    window.addEventListener('auth-change', checkUser);
+    return () => window.removeEventListener('auth-change', checkUser);
   }, []);
 
   useEffect(() => {
@@ -132,29 +141,30 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             {/* User Menu */}
             {user ? (
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-3">
                 <button
                   onClick={() => router.push('/profile')}
-                  className="p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200"
+                  className="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full transition-all duration-200"
                   aria-label="Profile"
                   title="الملف الشخصي"
                 >
-                  <FiUser className="w-5 h-5" />
+                  <FiUser className="w-4 h-4 text-green-300" />
+                  <span className="text-sm font-bold text-white max-w-[120px] truncate">مرحباً، {user.name?.split(' ')[0] || 'مستخدم'}</span>
                 </button>
                 <button
                   onClick={() => {
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
                     setUser(null);
+                    window.dispatchEvent(new Event('auth-change'));
                     router.push('/');
                   }}
-                  className="p-2 text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200"
+                  className="p-2 text-white hover:text-red-400 hover:bg-white/10 rounded-full transition-colors duration-200"
                   aria-label="Logout"
                   title="تسجيل الخروج"
                 >
                   <FiLogOut className="w-5 h-5" />
                 </button>
-                <span className="text-sm text-white/80 px-2">{user.name}</span>
               </div>
             ) : (
               <button
@@ -244,6 +254,15 @@ export default function Navbar() {
           {/* Mobile User Menu */}
           {user ? (
             <div className="pt-2 min-[280px]:pt-3 border-t border-white/10 mt-2 space-y-1.5 min-[280px]:space-y-2">
+              <div className="px-3 min-[280px]:px-4 py-2 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center border border-white/30">
+                  <FiUser className="text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-green-300">مرحباً بك</span>
+                  <span className="text-sm font-bold text-white truncate max-w-[150px]">{user.name}</span>
+                </div>
+              </div>
               <button
                 onClick={() => {
                   router.push('/profile');
@@ -254,16 +273,16 @@ export default function Navbar() {
                 <FiUser className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5 flex-shrink-0" />
                 <span className="truncate">الملف الشخصي</span>
               </button>
-              <div className="px-3 min-[280px]:px-4 py-1.5 min-[280px]:py-2 text-xs min-[280px]:text-sm text-white/80 truncate">{user.name}</div>
               <button
                 onClick={() => {
                   localStorage.removeItem('token');
                   localStorage.removeItem('user');
                   setUser(null);
+                  window.dispatchEvent(new Event('auth-change'));
                   setIsOpen(false);
                   router.push('/');
                 }}
-                className="w-full flex items-center gap-2 min-[280px]:gap-3 px-3 min-[280px]:px-4 py-2 min-[280px]:py-2.5 text-sm min-[280px]:text-base text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200"
+                className="w-full flex items-center gap-2 min-[280px]:gap-3 px-3 min-[280px]:px-4 py-2 min-[280px]:py-2.5 text-sm min-[280px]:text-base text-white hover:text-red-400 hover:bg-white/10 rounded-lg transition-colors duration-200"
               >
                 <FiLogOut className="w-4 h-4 min-[280px]:w-5 min-[280px]:h-5 flex-shrink-0" />
                 <span className="truncate">تسجيل الخروج</span>

@@ -7,6 +7,7 @@ import { FiMail, FiLock, FiArrowRight, FiGithub } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { authAPI } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -35,6 +36,9 @@ export default function LoginPage() {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("user", JSON.stringify(response.user));
 
+                // Trigger event so navbar updates
+                window.dispatchEvent(new Event('auth-change'));
+
                 showToast("تم تسجيل الدخول بنجاح! أهلاً بك", "success");
                 // add small delay for the toast
                 setTimeout(() => {
@@ -50,6 +54,32 @@ export default function LoginPage() {
             console.error("Login error:", error);
             const errorMessage = error?.message || "حدث خطأ أثناء تسجيل الدخول";
             showToast(errorMessage, "error");
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        try {
+            setLoading(true);
+            const res = await authAPI.google(credentialResponse.credential);
+            if (res && res.success) {
+                localStorage.setItem("token", res.token);
+                localStorage.setItem("user", JSON.stringify(res.user));
+
+                // Trigger event so navbar updates
+                window.dispatchEvent(new Event('auth-change'));
+
+                showToast("تم تسجيل الدخول بواسطة Google بنجاح!", "success");
+                setTimeout(() => {
+                    router.push(redirectUrl);
+                    router.refresh();
+                }, 1000);
+            } else {
+                showToast(res?.message || "فشل تسجيل الدخول بواسطة جوجل", "error");
+                setLoading(false);
+            }
+        } catch (error: any) {
+            showToast(error?.message || "حدث خطأ أثناء الاتصال بالخادم", "error");
             setLoading(false);
         }
     };
@@ -185,13 +215,15 @@ export default function LoginPage() {
                         <div className="flex-1 h-px bg-gray-200"></div>
                     </div>
 
-                    <div className="mt-8 grid grid-cols-2 gap-4">
-                        <button type="button" className="flex items-center justify-center gap-2 py-3 px-4 border-2 border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all font-semibold text-gray-700">
-                            <FcGoogle className="w-6 h-6" /> Google
-                        </button>
-                        <button type="button" className="flex items-center justify-center gap-2 py-3 px-4 border-2 border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all font-semibold text-gray-700">
-                            <FiGithub className="w-6 h-6" /> Facebook
-                        </button>
+                    <div className="mt-8 flex justify-center w-full">
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={() => showToast("فشل تسجيل الدخول بواسطة جوجل", "error")}
+                            useOneTap
+                            shape="pill"
+                            theme="outline"
+                            text="continue_with"
+                        />
                     </div>
 
                     <p className="mt-10 text-center text-gray-600 font-medium">

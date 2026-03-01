@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "@/store/slices/cartSlice";
 import { ordersAPI, authAPI } from "@/lib/api";
-import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/footer/fotter";
 import { FiMapPin, FiCreditCard, FiUser, FiPhone, FiMail, FiLock } from "react-icons/fi";
 import { getFirstImageUrl } from "@/lib/imageUtils";
 import Image from "next/image";
@@ -236,10 +234,9 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center bg-white rounded-2xl shadow-xl p-12">
+      <div className="min-h-[70vh] bg-gray-50 flex flex-col justify-center items-center py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center bg-white rounded-2xl shadow-sm border border-gray-100 p-12 max-w-lg mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">السلة فارغة</h2>
             <p className="text-gray-600 mb-8">لم تقم بإضافة أي منتجات للسلة بعد</p>
             <button
@@ -250,14 +247,12 @@ export default function CheckoutPage() {
             </button>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-
+    <div className="min-h-screen bg-gray-50 pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "السلة", href: "/cart" }, { label: "إتمام الطلب" }]} />
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 mt-2">إتمام الطلب</h1>
@@ -574,7 +569,6 @@ export default function CheckoutPage() {
         </form>
 
       </div>
-
     </div>
   );
 }

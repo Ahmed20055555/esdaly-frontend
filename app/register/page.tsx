@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FiMail, FiLock, FiUser, FiPhone, FiArrowRight } from "react-icons/fi";
 import { authAPI } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -39,6 +40,32 @@ export default function RegisterPage() {
             }
         } catch (error: any) {
             console.error("Register error:", error);
+            showToast(error?.message || "حدث خطأ أثناء الاتصال بالخادم", "error");
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        try {
+            setLoading(true);
+            const res = await authAPI.google(credentialResponse.credential);
+            if (res && res.success) {
+                localStorage.setItem("token", res.token);
+                localStorage.setItem("user", JSON.stringify(res.user));
+
+                // Trigger event so navbar updates
+                window.dispatchEvent(new Event('auth-change'));
+
+                showToast("تم الدخول والتسجيل بواسطة Google بنجاح!", "success");
+                setTimeout(() => {
+                    router.push("/");
+                    router.refresh();
+                }, 1000);
+            } else {
+                showToast(res?.message || "فشل التسجيل بواسطة جوجل", "error");
+                setLoading(false);
+            }
+        } catch (error: any) {
             showToast(error?.message || "حدث خطأ أثناء الاتصال بالخادم", "error");
             setLoading(false);
         }
@@ -216,6 +243,23 @@ export default function RegisterPage() {
                             </button>
                         </div>
                     </form>
+
+                    <div className="mt-8 flex items-center gap-4">
+                        <div className="flex-1 h-px bg-gray-200"></div>
+                        <span className="text-gray-500 font-medium text-sm">أو التسجيل بواسطة</span>
+                        <div className="flex-1 h-px bg-gray-200"></div>
+                    </div>
+
+                    <div className="mt-8 flex justify-center">
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={() => showToast("فشل التسجيل بواسطة جوجل", "error")}
+                            useOneTap
+                            shape="pill"
+                            theme="outline"
+                            text="signup_with"
+                        />
+                    </div>
 
                     <p className="mt-8 text-center text-gray-600 font-medium">
                         لديك حساب بالفعل؟{" "}

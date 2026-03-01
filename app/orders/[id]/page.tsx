@@ -5,8 +5,6 @@ import { FiPackage, FiTruck, FiMapPin, FiCreditCard, FiCheckCircle, FiArrowRight
 import Image from "next/image";
 import Link from "next/link";
 import { ordersAPI } from "@/lib/api";
-import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/footer/fotter";
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 
 export default function OrderStatusPage() {
@@ -52,31 +50,27 @@ export default function OrderStatusPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50">
-                <Navbar />
-                <div className="flex items-center justify-center h-[60vh]">
+            <div className="min-h-screen bg-gray-50 flex flex-col pt-16">
+                <div className="flex-1 flex items-center justify-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B3D2E]"></div>
                 </div>
-                <Footer />
             </div>
         );
     }
 
     if (error || !order) {
         return (
-            <div className="min-h-screen bg-gray-50">
-                <Navbar />
-                <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <div className="min-h-screen bg-gray-50 flex flex-col pt-16">
+                <div className="flex-1 max-w-4xl w-full mx-auto px-4 py-8 text-center flex items-center justify-center">
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-md w-full">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">عذراً، لم يتم العثور على الطلب</h2>
                         <p className="text-gray-600 mb-8">{error || "تأكد من رقم الطلب الصحيح"}</p>
-                        <Link href="/" className="inline-flex items-center gap-2 bg-[#0B3D2E] text-white px-8 py-3 rounded-xl hover:bg-green-700 transition-all font-semibold">
+                        <Link href="/" className="inline-flex items-center justify-center gap-2 bg-[#0B3D2E] text-white px-8 py-3 rounded-xl hover:bg-green-700 transition-all font-semibold w-full">
                             <FiHome />
                             العودة للرئيسية
                         </Link>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }
@@ -84,8 +78,7 @@ export default function OrderStatusPage() {
     const status = getStatusInfo(order.status);
 
     return (
-        <div className="min-h-screen bg-gray-50 font-arabic">
-            <Navbar />
+        <div className="min-h-screen bg-gray-50 font-arabic pt-8">
             <div className="max-w-5xl mx-auto px-4 py-8">
                 <Breadcrumbs items={[{ label: "الرئيسية", href: "/" }, { label: "حسابي", href: "/profile" }, { label: "تفاصيل الطلب" }]} />
 
@@ -215,7 +208,6 @@ export default function OrderStatusPage() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

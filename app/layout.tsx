@@ -6,6 +6,8 @@ import ReduxProvider from '@/store/provider'
 import { ToastProvider } from '@/context/ToastContext'
 import ConditionalLayout from './conditional-layout'
 import WhatsAppButton from '@/components/whatsapp-button/WhatsAppButton'
+import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,10 +26,13 @@ export default function RootLayout({
             <body className={inter.className}>
                 <ReduxProvider>
                     <ToastProvider>
-                        <ConditionalLayout>
-                            {children}
-                            <WhatsAppButton />
-                        </ConditionalLayout>
+                        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "dummy"}>
+                            <ConditionalLayout>
+                                {children}
+                                <WhatsAppButton />
+                                <ScrollToTop />
+                            </ConditionalLayout>
+                        </GoogleOAuthProvider>
                     </ToastProvider>
                 </ReduxProvider>
             </body>

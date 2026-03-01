@@ -74,9 +74,9 @@ export default function ProfilePage() {
                 setUser(data.user);
                 setIsEditing(false);
                 showToast("تم تحديث الملف الشخصي بنجاح", "success");
-                // Update local storage user data
                 const localUserData = JSON.parse(localStorage.getItem('user') || '{}');
                 localStorage.setItem('user', JSON.stringify({ ...localUserData, ...data.user }));
+                window.dispatchEvent(new Event('auth-change'));
             }
         } catch (err: any) {
             showToast(err.message || "خطأ في تحديث الملف الشخصي", "error");

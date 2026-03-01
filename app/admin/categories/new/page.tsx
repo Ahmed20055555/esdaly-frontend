@@ -50,7 +50,7 @@ export default function NewCategoryPage() {
         formDataToSend.append('image', imageFile);
       }
 
-      const response = await fetch('' + (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api').replace('/api','') + '/api/categories', {
+      const response = await fetch('' + (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api').replace('/api', '') + '/api/categories', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -64,11 +64,13 @@ export default function NewCategoryPage() {
         alert('تم إنشاء الفئة بنجاح!');
         router.push('/admin/categories');
       } else {
-        alert(data.message || 'حدث خطأ أثناء إنشاء الفئة');
+        const errorMsg = data.error || data.message || 'حدث خطأ أثناء إنشاء الفئة';
+        const details = data.details ? `\nالتفاصيل: ${data.details}` : '';
+        alert(`${errorMsg}${details}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating category:', error);
-      alert('حدث خطأ أثناء إنشاء الفئة');
+      alert(`حدث خطأ أثناء إنشاء الفئة: ${error.message || 'Error'}`);
     } finally {
       setLoading(false);
     }

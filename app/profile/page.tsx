@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FiUser, FiMail, FiPhone, FiMapPin, FiLock, FiEdit2, FiSave, FiX, FiCheckCircle } from "react-icons/fi";
-import { authAPI } from "@/lib/api";
+import { FiUser, FiMail, FiPhone, FiMapPin, FiLock, FiEdit2, FiSave, FiX, FiCheckCircle, FiShoppingBag, FiArrowLeft } from "react-icons/fi";
+import { authAPI, ordersAPI } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function ProfilePage() {
     const { showToast } = useToast();
@@ -15,6 +17,8 @@ export default function ProfilePage() {
         phone: "",
         address: ""
     });
+    const [orders, setOrders] = useState<any[]>([]);
+    const [ordersLoading, setOrdersLoading] = useState(false);
 
     const [passwordData, setPasswordData] = useState({
         currentPassword: "",
@@ -25,7 +29,22 @@ export default function ProfilePage() {
 
     useEffect(() => {
         fetchProfile();
+        fetchOrders();
     }, []);
+
+    const fetchOrders = async () => {
+        try {
+            setOrdersLoading(true);
+            const data = await ordersAPI.getAll({ limit: 5 });
+            if (data.success) {
+                setOrders(data.orders);
+            }
+        } catch (err: any) {
+            console.error("Error fetching orders:", err);
+        } finally {
+            setOrdersLoading(false);
+        }
+    };
 
     const fetchProfile = async () => {
         try {
@@ -303,6 +322,47 @@ export default function ProfilePage() {
                                     <FiCheckCircle className="text-green-400" />
                                     <span className="text-sm font-bold opacity-90">حساب موثق</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Recent Orders Sidebar Mini-list */}
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div className="p-5 border-b border-gray-50 flex items-center justify-between">
+                                <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                                    <FiShoppingBag className="text-[#0B3D2E]" />
+                                    آخر الطلبات
+                                </h3>
+                            </div>
+                            <div className="p-4">
+                                {ordersLoading ? (
+                                    <div className="flex justify-center py-4">
+                                        <div className="animate-spin h-5 w-5 border-b-2 border-[#0B3D2E] rounded-full"></div>
+                                    </div>
+                                ) : orders.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {orders.map((order) => (
+                                            <Link
+                                                key={order._id}
+                                                href={`/orders/${order._id}`}
+                                                className="block p-3 rounded-xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all group"
+                                            >
+                                                <div className="flex justify-between items-start mb-1">
+                                                    <span className="text-xs font-bold text-gray-400 group-hover:text-[#0B3D2E]">#{order.orderNumber.split('-').pop()}</span>
+                                                    <span className="text-xs font-bold text-[#0B3D2E]">{order.pricing.total} ج.م</span>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-[10px] text-gray-500">{new Date(order.createdAt).toLocaleDateString('ar-EG')}</span>
+                                                    <FiArrowLeft className="w-3 h-3 text-gray-300 group-hover:text-[#0B3D2E] group-hover:-translate-x-1 transition-all" />
+                                                </div>
+                                            </Link>
+                                        ))}
+                                        <Link href="/profile" className="block text-center text-xs font-bold text-[#0B3D2E] hover:underline pt-2">
+                                            عرض الكل
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <p className="text-center text-gray-400 text-sm py-4">لا توجد طلبات سابقة</p>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -27,9 +27,17 @@ export default function CheckoutPage() {
   const [user, setUser] = useState<any>(null);
 
   // حساب المجموع
-  const subtotal = cart.reduce((total: number, item: any) => total + (item.price * item.quantity), 0);
-  const shipping = 50; // قيمة ثابتة للشحن مؤقتاً
-  const total = subtotal + shipping;
+  const calculateInitialTotals = () => {
+    const subtotal = cart.reduce((total: number, item: any) => total + (item.price * item.quantity), 0);
+    const shipping = subtotal > 3000 ? 0 : 30;
+    const total = subtotal + shipping;
+    return { subtotal, shipping, total };
+  };
+
+  const initialTotals = calculateInitialTotals();
+  const subtotal = initialTotals.subtotal;
+  const shipping = initialTotals.shipping;
+  const total = initialTotals.total;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Form states
@@ -99,14 +107,14 @@ export default function CheckoutPage() {
   };
 
   const calculateTotals = () => {
-    const subtotal = cart.reduce((sum: number, item: any) => {
+    const subtotalValue = cart.reduce((sum: number, item: any) => {
       return sum + parseFloat(item.price) * item.quantity;
     }, 0);
 
-    const shipping = subtotal > 3000 ? 0 : 30; // شحن مجاني للطلبات فوق 500 جنيه
-    const total = subtotal + shipping;
+    const shippingValue = subtotalValue > 3000 ? 0 : 30; // شحن مجاني للطلبات فوق 3000 جنيه
+    const totalValue = subtotalValue + shippingValue;
 
-    return { subtotal, shipping, total, discount: 0 };
+    return { subtotal: subtotalValue, shipping: shippingValue, total: totalValue, discount: 0 };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

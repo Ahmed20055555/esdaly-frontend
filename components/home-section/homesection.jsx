@@ -115,11 +115,11 @@ export default function Homesection() {
     const quantityAfterAdd = quantityInCart + 1;
 
     if (stock === 0) {
-      alert("مفيش من المنتج ده في المخزن");
+      showToast("عذراً، هذا المنتج غير متوفر حالياً", "error");
       return;
     }
     if (quantityAfterAdd > stock) {
-      alert("مفيش من المنتج ده في المخزن (المتوفر: " + stock + " قطعة)");
+      showToast(`عذراً، الكمية المتوفرة هي ${stock} فقط`, "error");
       return;
     }
     dispatch(addToCart(item));

@@ -11,12 +11,14 @@ import { getFirstImageUrl } from "../../../lib/imageUtils";
 import Breadcrumbs from "../../../components/breadcrumbs/breadcrumbs";
 import ShareButtons from "../../../components/share-buttons/sharebuttons";
 import { saveRecentlyViewed } from "../../../components/recently-viewed/recentlyviewed";
+import { useToast } from "../../../context/ToastContext";
 import Link from "next/link";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { showToast } = useToast();
   const favorites = useSelector((state: any) => state.favorites);
 
   const [product, setProduct] = useState<any>(null);
@@ -165,14 +167,14 @@ export default function ProductDetailPage() {
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reviewForm.comment.trim()) {
-      alert('يرجى كتابة التعليق');
+      showToast('يرجى كتابة التعليق', 'error');
       return;
     }
 
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        alert('يجب تسجيل الدخول لإضافة تقييم');
+        showToast('يجب تسجيل الدخول لإضافة تقييم', 'info');
         router.push('/login?redirect=/product/' + params.id);
         return;
       }
@@ -248,7 +250,7 @@ export default function ProductDetailPage() {
       ? product.stock.quantity
       : 999;
     if (quantity > stockQty) {
-      alert(`المخزون المتاح: ${stockQty} قطعة فقط`);
+      showToast(`المخزون المتاح: ${stockQty} قطعة فقط`, 'error');
       return;
     }
 
@@ -276,7 +278,7 @@ export default function ProductDetailPage() {
 
     dispatch(setCart(currentCart));
     localStorage.setItem("cart", JSON.stringify(currentCart));
-    alert("تم إضافة المنتج للسلة بنجاح!");
+    showToast("تم إضافة المنتج للسلة بنجاح!", "success");
   };
 
   const handleToggleFavorite = () => {
@@ -701,7 +703,7 @@ export default function ProductDetailPage() {
                   return;
                 }
                 if (!hasPurchasedProduct()) {
-                  alert('يجب شراء المنتج أولاً لتتمكن من التقييم. قم بإتمام عملية الشراء ثم عد هنا.');
+                  showToast('يجب شراء المنتج أولاً لتتمكن من التقييم', 'info');
                   return;
                 }
                 setShowReviewForm(!showReviewForm);

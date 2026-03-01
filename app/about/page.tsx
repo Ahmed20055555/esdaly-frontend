@@ -7,10 +7,10 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 
 export default function AboutPage() {
     const stats = [
-        { label: 'عميل سعيد', value: '+10,000', icon: FiUsers },
-        { label: 'منتج متاح', value: '+500', icon: FiCheckCircle },
-        { label: 'سنوات خبرة', value: '+5', icon: FiAward },
-        { label: 'تقييم إيجابي', value: '%99', icon: FiHeart },
+        { label: 'عميل سعيد', value: '5,000+', icon: FiUsers },
+        { label: 'منتج متاح', value: '200+', icon: FiCheckCircle },
+        { label: 'سنوات خبرة', value: '3+', icon: FiAward },
+        { label: 'تقييم إيجابي', value: '98%', icon: FiHeart },
     ];
 
     return (
@@ -33,11 +33,10 @@ export default function AboutPage() {
                         {/* Placeholder for an about image */}
                         <div className="absolute inset-0 bg-[#0B3D2E]/10 mix-blend-multiply z-10" />
                         <Image
-                            src="/placeholder.jpg"
+                            src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&auto=format&fit=crop"
                             alt="About ESDALY"
                             fill
                             className="object-cover"
-                            unoptimized
                         />
                     </div>
                     <div className="space-y-8">

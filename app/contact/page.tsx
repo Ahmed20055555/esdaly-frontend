@@ -38,15 +38,15 @@ export default function ContactPage() {
     const contactInfo = [
         {
             title: 'اتصل بنا',
-            details: '+20 123 456 7890',
+            details: '+20 100 000 0000',
             icon: FiPhone,
-            action: 'tel:+201234567890'
+            action: 'tel:+201000000000'
         },
         {
             title: 'البريد الإلكتروني',
-            details: 'support@esdaly.com',
+            details: 'info@esdaly.com',
             icon: FiMail,
-            action: 'mailto:support@esdaly.com'
+            action: 'mailto:info@esdaly.com'
         },
         {
             title: 'العنوان',

@@ -31,6 +31,29 @@ export default function AdminUsers() {
     }
   };
 
+  const handleDeleteUser = async (id: string) => {
+    if (!window.confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUsers(users.filter((user: any) => user._id !== id));
+      } else {
+        alert(data.message || 'حدث خطأ أثناء الحذف');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('حدث خطأ أثناء الحذف');
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -70,16 +93,16 @@ export default function AdminUsers() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs rounded-full ${user.role === 'admin'
-                        ? 'bg-purple-100 text-purple-800'
-                        : 'bg-gray-100 text-gray-800'
+                      ? 'bg-purple-100 text-purple-800'
+                      : 'bg-gray-100 text-gray-800'
                       }`}>
                       {user.role === 'admin' ? 'مدير' : 'مستخدم'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs rounded-full ${user.isActive
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
                       }`}>
                       {user.isActive ? 'نشط' : 'غير نشط'}
                     </span>
@@ -92,7 +115,11 @@ export default function AdminUsers() {
                       <button className="text-blue-600 hover:text-blue-900 p-2 hover:bg-blue-50 rounded-lg">
                         <FiEdit className="w-5 h-5" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900 p-2 hover:bg-red-50 rounded-lg">
+                      <button
+                        onClick={() => handleDeleteUser(user._id)}
+                        className="text-red-600 hover:text-red-900 p-2 hover:bg-red-50 rounded-lg"
+                        title="حذف"
+                      >
                         <FiTrash2 className="w-5 h-5" />
                       </button>
                     </div>

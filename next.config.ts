@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5005',
+        pathname: '/**',
+      },
+      {
         protocol: 'https',
         hostname: '*.railway.app',
         port: '',
@@ -24,6 +30,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.up.railway.app',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
         port: '',
         pathname: '/**',
       },

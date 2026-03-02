@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Cairo } from 'next/font/google'
 import './globals.css'
 import ReduxProvider from '@/store/provider'
 import { ToastProvider } from '@/context/ToastContext'
@@ -9,7 +9,7 @@ import WhatsAppButton from '@/components/whatsapp-button/WhatsAppButton'
 import ScrollToTop from '@/components/scroll-to-top/ScrollToTop'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const cairo = Cairo({ subsets: ['arabic', 'latin'] })
 
 export const metadata: Metadata = {
     title: 'Esdaly',
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="ar" dir="rtl">
-            <body className={inter.className}>
+            <body className={cairo.className}>
                 <ReduxProvider>
                     <ToastProvider>
                         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "dummy"}>

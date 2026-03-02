@@ -74,10 +74,10 @@ export default function Navbar() {
   return (
     <nav
       className={`
-        z-50 bg-[#0B3D2E] text-white
-        transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]
+        sticky top-0 z-50 text-white
+        transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]
         ${hideNavbar ? '-translate-y-full' : 'translate-y-0'}
-        ${isScrolled ? 'shadow-lg' : ''}
+        ${isScrolled ? 'bg-[#0B3D2E]/90 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)] border-b border-white/10' : 'bg-[#0B3D2E]'}
       `}
     >
       <div className="max-w-7xl mx-auto flex flex-col px-1.5 min-[280px]:px-2 sm:px-4 lg:px-8">
@@ -225,9 +225,10 @@ export default function Navbar() {
                 e.preventDefault();
                 router.push(link.href);
               }}
-              className="px-4 py-2 text-sm font-medium text-white hover:text-green-300 hover:bg-white/10 rounded-lg transition-colors duration-200 cursor-pointer"
+              className="relative px-4 py-2 text-sm font-medium text-white group transition-colors duration-300 cursor-pointer"
             >
-              {link.name}
+              <span className="relative z-10 group-hover:text-green-300 transition-colors duration-300">{link.name}</span>
+              <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-green-400 group-hover:w-full group-hover:left-0 transition-all duration-300 ease-in-out rounded-full"></span>
             </a>
           ))}
         </div>

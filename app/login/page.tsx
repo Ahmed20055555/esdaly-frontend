@@ -144,13 +144,14 @@ function LoginContent() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
 
-                        <div className={`relative transition-all duration-300 ${isFocused === 'email' ? 'scale-[1.02]' : ''}`}>
-                            <label className={`absolute right-4 transition-all duration-300 pointer-events-none ${email || isFocused === 'email' ? '-top-3 text-xs bg-white px-2 text-[#0B3D2E] font-bold' : 'top-4 text-gray-400'}`}>
+                        {/* Email Field */}
+                        <div className="space-y-2 group">
+                            <label className="block text-sm font-bold text-[#0B3D2E] mr-1 transition-colors group-focus-within:text-[#082d22]">
                                 البريد الإلكتروني
                             </label>
-                            <div className="relative flex items-center">
-                                <div className="absolute right-4 text-gray-400">
-                                    <FiMail className={`w-5 h-5 transition-colors ${isFocused === 'email' ? 'text-[#0B3D2E]' : ''}`} />
+                            <div className="relative flex items-center transition-all duration-300 transform group-focus-within:scale-[1.01]">
+                                <div className="absolute right-4 text-gray-400 group-focus-within:text-[#0B3D2E] transition-colors z-10">
+                                    <FiMail className="w-5 h-5" />
                                 </div>
                                 <input
                                     type="email"
@@ -159,25 +160,26 @@ function LoginContent() {
                                     onFocus={() => setIsFocused('email')}
                                     onBlur={() => setIsFocused(null)}
                                     required
-                                    className={`w-full pr-12 pl-4 py-4 bg-transparent border-2 rounded-xl focus:outline-none transition-all outline-none ${isFocused === 'email' ? 'border-[#0B3D2E] shadow-lg shadow-green-900/5' : 'border-gray-200 hover:border-gray-300'}`}
-                                    dir="ltr"
+                                    placeholder="your@email.com"
+                                    className={`w-full pr-12 pl-4 py-4 bg-gray-50/50 border-2 rounded-2xl focus:outline-none transition-all outline-none ${isFocused === 'email' ? 'border-[#0B3D2E] bg-white shadow-xl shadow-[#0B3D2E]/5' : 'border-gray-200 hover:border-gray-300'}`}
+                                    dir="rtl"
                                 />
                             </div>
                         </div>
 
-                        <div className={`relative transition-all duration-300 ${isFocused === 'password' ? 'scale-[1.02]' : ''}`}>
-                            <div className="flex justify-between items-center w-full px-1 mb-2">
-                                <label className={`text-gray-900 font-bold transition-opacity duration-300 ${password || isFocused === 'password' ? 'opacity-0' : 'opacity-0'}`}>المرور</label>
-                                <Link href="/forgot-password" className="text-sm font-semibold text-[#0B3D2E] hover:text-[#E5B869] transition-colors">
+                        {/* Password Field */}
+                        <div className="space-y-2 group">
+                            <div className="flex justify-between items-center px-1">
+                                <label className="text-sm font-bold text-[#0B3D2E] transition-colors group-focus-within:text-[#082d22]">
+                                    كلمة المرور
+                                </label>
+                                <Link href="/forgot-password" onClick={(e) => e.stopPropagation()} className="text-xs font-bold text-[#E5B869] hover:text-[#0B3D2E] transition-colors">
                                     نسيت كلمة المرور؟
                                 </Link>
                             </div>
-                            <label className={`absolute right-4 transition-all duration-300 pointer-events-none z-10 ${password || isFocused === 'password' ? 'top-5 text-xs bg-white px-2 text-[#0B3D2E] font-bold' : 'top-12 text-gray-400'}`}>
-                                كلمة المرور
-                            </label>
-                            <div className="relative flex items-center">
-                                <div className="absolute right-4 text-gray-400 z-10">
-                                    <FiLock className={`w-5 h-5 transition-colors ${isFocused === 'password' ? 'text-[#0B3D2E]' : ''}`} />
+                            <div className="relative flex items-center transition-all duration-300 transform group-focus-within:scale-[1.01]">
+                                <div className="absolute right-4 text-gray-400 group-focus-within:text-[#0B3D2E] transition-colors z-10">
+                                    <FiLock className="w-5 h-5" />
                                 </div>
                                 <input
                                     type="password"
@@ -186,8 +188,9 @@ function LoginContent() {
                                     onFocus={() => setIsFocused('password')}
                                     onBlur={() => setIsFocused(null)}
                                     required
-                                    className={`w-full pr-12 pl-4 py-4 bg-transparent border-2 rounded-xl focus:outline-none transition-all outline-none ${isFocused === 'password' ? 'border-[#0B3D2E] shadow-lg shadow-green-900/5' : 'border-gray-200 hover:border-gray-300'}`}
-                                    dir="ltr"
+                                    placeholder="••••••••"
+                                    className={`w-full pr-12 pl-4 py-4 bg-gray-50/50 border-2 rounded-2xl focus:outline-none transition-all outline-none ${isFocused === 'password' ? 'border-[#0B3D2E] bg-white shadow-xl shadow-[#0B3D2E]/5' : 'border-gray-200 hover:border-gray-300'}`}
+                                    dir="rtl"
                                 />
                             </div>
                         </div>
@@ -233,8 +236,8 @@ function LoginContent() {
                         </Link>
                     </p>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
 

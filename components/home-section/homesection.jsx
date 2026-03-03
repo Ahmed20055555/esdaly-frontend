@@ -191,14 +191,14 @@ export default function Homesection() {
               </div>
               <div className="flex-1 max-w-[280px]">
                 <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-0.5 ml-1 font-bold">ترتيب حسب</label>
-                <div className="relative">
+                <div className="relative group/select">
                   <select
                     value={sortBy}
                     onChange={(e) => {
                       setSortBy(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="w-full bg-transparent text-sm font-black text-gray-900 dark:text-white focus:outline-none cursor-pointer appearance-none pr-8"
+                    className="w-full bg-gray-50/50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-700 rounded-xl px-3 py-1.5 text-sm font-black text-gray-900 dark:text-white focus:outline-none focus:border-[#0B3D2E]/50 focus:ring-1 focus:ring-[#0B3D2E]/20 transition-all cursor-pointer appearance-none pr-8"
                   >
                     <option value="newest">وصل حديثاً ✨</option>
                     <option value="price-asc">الأقل سعراً 📉</option>
@@ -206,7 +206,7 @@ export default function Homesection() {
                     <option value="popular">الأكثر مبيعاً 🔥</option>
                     <option value="rating">الأعلى تقييماً ⭐</option>
                   </select>
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                     <FiChevronLeft className="w-4 h-4 transform rotate-270" />
                   </div>
                 </div>

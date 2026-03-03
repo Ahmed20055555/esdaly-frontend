@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from "next/image";
-import { FiShoppingCart, FiHeart, FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiShoppingCart, FiHeart, FiChevronRight, FiChevronLeft, FiFilter, FiLayers, FiGrid, FiList } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/store/slices/cartSlice";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
@@ -37,7 +38,8 @@ export default function Homesection() {
         setLoading(true);
         const response = await productsAPI.getAll({
           page: currentPage,
-          limit: productsPerPage
+          limit: productsPerPage,
+          sort: sortBy
         });
 
         if (response.success) {
@@ -73,25 +75,9 @@ export default function Homesection() {
     }
 
     getApi();
-  }, [currentPage]);
+  }, [currentPage, sortBy]);
 
 
-  useEffect(() => {
-
-    const product = products.sort((a, b) => {
-
-      if (sortBy == 'price-asc') {
-        return a.price - b.price;
-      } else if (sortBy == 'price-desc') {
-        return b.price - a.price;
-      }
-
-
-    });
-
-    setProducts(product);
-
-  }, [sortBy]);
 
   // حفظ السلة في localStorage عند التغيير
   useEffect(() => {
@@ -194,48 +180,80 @@ export default function Homesection() {
           </p>
         </div>
 
-        {/* Filters and Sort */}
-        <div className="mb-4 sm:mb-6 flex flex-col md:flex-row gap-2 sm:gap-3 md:gap-4 items-stretch md:items-center justify-between">
+        {/* Premium Filters & Sort Controls */}
+        <div className="mb-8 md:mb-12">
+          <div className="flex flex-col lg:flex-row gap-4 lg:items-center justify-between bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-[2rem] shadow-md border border-gray-200 dark:border-gray-700">
 
-          <div className="flex flex-wrap gap-2 sm:gap-3 flex-1 w-1/2 sm:mb-0 mb-5">
+            {/* Sort Section */}
+            <div className="flex items-center gap-3 flex-1 group">
+              <div className="w-10 h-10 rounded-full bg-[#0B3D2E]/5 flex items-center justify-center text-[#0B3D2E] transition-colors group-hover:bg-[#0B3D2E]/10">
+                <FiFilter className="w-5 h-5 transition-transform group-hover:scale-110" />
+              </div>
+              <div className="flex-1 max-w-[280px]">
+                <label className="block text-[10px] uppercase tracking-widest text-gray-400 mb-0.5 ml-1 font-bold">ترتيب حسب</label>
+                <div className="relative">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => {
+                      setSortBy(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="w-full bg-transparent text-sm font-black text-gray-900 dark:text-white focus:outline-none cursor-pointer appearance-none pr-8"
+                  >
+                    <option value="newest">وصل حديثاً ✨</option>
+                    <option value="price-asc">الأقل سعراً 📉</option>
+                    <option value="price-desc">الأعلى سعراً 📈</option>
+                    <option value="popular">الأكثر مبيعاً 🔥</option>
+                    <option value="rating">الأعلى تقييماً ⭐</option>
+                  </select>
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                    <FiChevronLeft className="w-4 h-4 transform rotate-270" />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            {/* Sort */}
-            <select
-              value={sortBy}
-              onChange={(e) => {
-                setSortBy(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="flex-1 min-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0B3D2E] bg-white"
-            >
-              <option value="newest">الأحدث</option>
-              <option value="price-asc">السعر: من الأقل للأعلى</option>
-              <option value="price-desc">السعر: من الأعلى للأقل</option>
-              <option value="popular">الأكثر مبيعاً</option>
-              <option value="rating">الأعلى تقييماً</option>
-            </select>
+            {/* Divider for Mobile */}
+            <div className="h-px w-full bg-gray-100 dark:bg-gray-700 lg:hidden opacity-50"></div>
 
+            {/* Grid Preview Section */}
+            <div className="flex items-center justify-between lg:justify-end gap-4 sm:gap-6">
+              <div className="flex flex-col items-end lg:items-center mr-auto lg:mr-0">
+                <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-1.5 font-bold">طريقة العرض</span>
+                <div className="flex gap-1 p-1 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700">
+                  {[1, 2, 3, 4, 5].map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => handleGridChange(num)}
+                      className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${gridCols === num
+                        ? 'bg-white dark:bg-gray-800 text-[#0B3D2E] shadow-sm scale-105'
+                        : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-white/50'
+                        } ${num > 2 ? 'hidden sm:flex' : 'flex'}`}
+                      aria-label={`عرض ${num} أعمدة`}
+                    >
+                      {num === 1 ? <FiList className="w-4 h-4" /> : <FiGrid className="w-4 h-4" />}
+                      {gridCols === num && (
+                        <motion.div
+                          layoutId="gridActive"
+                          className="absolute inset-0 border-2 border-[#0B3D2E]/20 rounded-xl"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Total Products Display */}
+              <div className="hidden min-[400px]:flex flex-col items-end border-r lg:border-l lg:border-r-0 border-gray-100 dark:border-gray-700 pr-4 sm:pr-6 lg:pl-6 lg:pr-0 ml-2">
+                <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5 font-bold">إجمالي النتائج</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-base font-black text-[#0B3D2E]">{totalProducts}</span>
+                  <span className="text-[10px] font-bold text-gray-400">منتج</span>
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* Grid Controls */}
-          <div className="flex gap-1.5 sm:gap-2 md:gap-3 justify-center md:justify-end">
-            {
-              [1, 2, 3, 4, 5].map((num) => (
-                <button
-                  key={num}
-                  onClick={() => handleGridChange(num)}
-                  className={`w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 ${num === 3 || num === 4 || num === 5 ? "hidden sm:block" : ""} rounded-full border text-xs sm:text-sm transition-all duration-200 ${gridCols === num
-                    ? 'bg-[#0B3D2E] text-white border-[#0B3D2E]'
-                    : 'border-gray-300 text-gray-700 hover:bg-[#0B3D2E] hover:text-white hover:border-[#0B3D2E]'
-                    }`}
-                  aria-label={`عرض ${num} أعمدة`}
-                >
-                  {num}
-                </button>
-              ))
-            }
-          </div>
-
         </div>
 
         {loading ? (

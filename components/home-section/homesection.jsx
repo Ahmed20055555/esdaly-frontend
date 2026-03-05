@@ -216,41 +216,12 @@ export default function Homesection() {
             {/* Divider for Mobile */}
             <div className="h-px w-full bg-gray-100 dark:bg-gray-700 lg:hidden opacity-50"></div>
 
-            {/* Grid Preview Section */}
-            <div className="flex items-center justify-between lg:justify-end gap-4 sm:gap-6">
-              <div className="flex flex-col items-end lg:items-center mr-auto lg:mr-0">
-                <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-1.5 font-bold">طريقة العرض</span>
-                <div className="flex gap-1 p-1 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700">
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <button
-                      key={num}
-                      onClick={() => handleGridChange(num)}
-                      className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${gridCols === num
-                        ? 'bg-white dark:bg-gray-800 text-[#0B3D2E] shadow-sm scale-105'
-                        : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-white/50'
-                        } ${num === 2 ? 'flex' : 'hidden sm:flex'}`}
-                      aria-label={`عرض ${num} أعمدة`}
-                    >
-                      {num === 1 ? <FiList className="w-4 h-4" /> : <FiGrid className="w-4 h-4" />}
-                      {gridCols === num && (
-                        <motion.div
-                          layoutId="gridActive"
-                          className="absolute inset-0 border-2 border-[#0B3D2E]/20 rounded-xl"
-                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Total Products Display */}
-              <div className="hidden min-[400px]:flex flex-col items-end border-r lg:border-l lg:border-r-0 border-gray-100 dark:border-gray-700 pr-4 sm:pr-6 lg:pl-6 lg:pr-0 ml-2">
-                <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5 font-bold">إجمالي النتائج</span>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-base font-black text-[#0B3D2E]">{totalProducts}</span>
-                  <span className="text-[10px] font-bold text-gray-400">منتج</span>
-                </div>
+            {/* Total Products Display */}
+            <div className="flex flex-col items-end border-r lg:border-l lg:border-r-0 border-gray-100 dark:border-gray-700 pr-4 sm:pr-6 lg:pl-6 lg:pr-0 ml-auto lg:ml-0">
+              <span className="text-[10px] uppercase tracking-widest text-gray-400 mb-0.5 font-bold">إجمالي النتائج</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-base font-black text-[#0B3D2E]">{totalProducts}</span>
+                <span className="text-[10px] font-bold text-gray-400">منتج</span>
               </div>
             </div>
           </div>

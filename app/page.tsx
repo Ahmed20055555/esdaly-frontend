@@ -11,7 +11,6 @@ export default function Home() {
     <div>
       <Hero />
       <CategoriesStrip />
-      <TrustBadges />
       <FeaturedProducts />
       <RecentlyViewed />
       <WhyUs />

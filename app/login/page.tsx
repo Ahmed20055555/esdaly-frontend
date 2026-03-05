@@ -157,16 +157,16 @@ function LoginContent() {
 
                     {/* Primary Action: Google Login */}
                     <div className="space-y-6">
-                        <div className="flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
-                            <p className="text-sm font-bold text-gray-700">الدخول السريع بواسطة</p>
-                            <div className="w-full flex justify-center">
+                        <div className="flex flex-col items-center gap-4 p-4 sm:p-6 bg-gray-50/50 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md w-full">
+                            <p className="text-sm font-bold text-gray-700 mb-1">الدخول السريع بواسطة</p>
+                            <div className="w-full flex justify-center scale-95 sm:scale-100 overflow-hidden">
                                 <GoogleLogin
                                     onSuccess={handleGoogleSuccess}
                                     onError={() => showToast("فشل تسجيل الدخول بواسطة جوجل", "error")}
                                     useOneTap
-                                    shape="circle"
+                                    shape="pill"
                                     theme="outline"
-                                    width="1000"
+                                    width="320"
                                     text="continue_with"
                                 />
                             </div>

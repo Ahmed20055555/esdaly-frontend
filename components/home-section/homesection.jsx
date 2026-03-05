@@ -123,11 +123,11 @@ export default function Homesection() {
   };
 
   const gridColsMap = {
-    1: 'grid-cols-1',
+    1: 'grid-cols-2 lg:grid-cols-1',
     2: 'grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-    5: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
+    3: 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+    5: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
   };
 
   const getGridColsClass = () => {
@@ -228,7 +228,7 @@ export default function Homesection() {
                       className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${gridCols === num
                         ? 'bg-white dark:bg-gray-800 text-[#0B3D2E] shadow-sm scale-105'
                         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-white/50'
-                        } ${num > 2 ? 'hidden sm:flex' : 'flex'}`}
+                        } ${num === 2 ? 'flex' : 'hidden sm:flex'}`}
                       aria-label={`عرض ${num} أعمدة`}
                     >
                       {num === 1 ? <FiList className="w-4 h-4" /> : <FiGrid className="w-4 h-4" />}

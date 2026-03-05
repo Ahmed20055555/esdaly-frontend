@@ -35,7 +35,7 @@ export default function CategoriesStrip() {
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 text-center">
           تسوقي حسب الفئة
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {categories.map((cat) => {
             const img = cat.image ? getImageUrl(cat.image) : null;
             return (

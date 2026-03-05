@@ -182,7 +182,7 @@ export default function CategoryProductsPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
               {products.map((product: any) => (
                 <div
                   key={product.id}
@@ -216,8 +216,8 @@ export default function CategoryProductsPage() {
                           handleToggleFavorite(product);
                         }}
                         className={`w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center shadow-lg transition-all duration-200 ${isFavorite(product.id)
-                            ? 'bg-red-500 text-white'
-                            : 'bg-white/90 text-gray-700 hover:bg-red-500 hover:text-white'
+                          ? 'bg-red-500 text-white'
+                          : 'bg-white/90 text-gray-700 hover:bg-red-500 hover:text-white'
                           }`}
                       >
                         <FiHeart className={`w-5 h-5 ${isFavorite(product.id) ? 'fill-current' : ''}`} />

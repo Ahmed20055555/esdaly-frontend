@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { FiMail, FiLock, FiArrowRight, FiGithub } from "react-icons/fi";
+import { FiMail, FiLock, FiArrowRight, FiGithub, FiChevronDown, FiUserPlus } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { motion, AnimatePresence } from "framer-motion";
 import { authAPI } from "@/lib/api";
 import { useToast } from "@/context/ToastContext";
 import { GoogleLogin } from "@react-oauth/google";
+
+
 
 function LoginContent() {
     const router = useRouter();
@@ -21,6 +24,7 @@ function LoginContent() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [isFocused, setIsFocused] = useState<string | null>(null);
+    const [hasEmailAccount, setHasEmailAccount] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,7 +39,7 @@ function LoginContent() {
             if (response && response.success) {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("user", JSON.stringify(response.user));
-
+                localStorage.setItem("showEmailForm", "false");
                 // Trigger event so navbar updates
                 window.dispatchEvent(new Event('auth-change'));
 
@@ -83,6 +87,15 @@ function LoginContent() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const savedHasAccount = localStorage.getItem("hasEmailAccount");
+        if (savedHasAccount === "true") setHasEmailAccount(true);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("hasEmailAccount", String(hasEmailAccount));
+    }, [hasEmailAccount]);
 
     return (
         <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50 flex-col md:flex-row">
@@ -137,104 +150,134 @@ function LoginContent() {
                         </Link>
                     </div>
 
-                    <div className="mb-10 text-center lg:text-right">
-                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">تسجيل الدخول</h2>
-                        <p className="text-gray-500 font-medium text-lg">يسعدنا رؤيتك مجدداً!</p>
+                    <div className="mb-8 text-center lg:text-right">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">أهلاً بكِ مجدداً</h2>
+                        <p className="text-gray-500 font-medium text-lg">سجلي دخولكِ لمتابعة تجربة التسوق</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-
-                        {/* Email Field */}
-                        <div className="space-y-2 group">
-                            <label className="block text-sm font-bold text-[#0B3D2E] mr-1 transition-colors group-focus-within:text-[#082d22]">
-                                البريد الإلكتروني
-                            </label>
-                            <div className="relative flex items-center transition-all duration-300 transform group-focus-within:scale-[1.01]">
-                                <div className="absolute right-4 text-gray-400 group-focus-within:text-[#0B3D2E] transition-colors z-10">
-                                    <FiMail className="w-5 h-5" />
-                                </div>
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    onFocus={() => setIsFocused('email')}
-                                    onBlur={() => setIsFocused(null)}
-                                    required
-                                    placeholder="your@email.com"
-                                    className={`w-full pr-12 pl-4 py-4 bg-gray-50/50 border-2 rounded-2xl focus:outline-none transition-all outline-none ${isFocused === 'email' ? 'border-[#0B3D2E] bg-white shadow-xl shadow-[#0B3D2E]/5' : 'border-gray-200 hover:border-gray-300'}`}
-                                    dir="rtl"
+                    {/* Primary Action: Google Login */}
+                    <div className="space-y-6">
+                        <div className="flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                            <p className="text-sm font-bold text-gray-700">الدخول السريع بواسطة</p>
+                            <div className="w-full flex justify-center">
+                                <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={() => showToast("فشل تسجيل الدخول بواسطة جوجل", "error")}
+                                    useOneTap
+                                    shape="circle"
+                                    theme="outline"
+                                    width="1000"
+                                    text="continue_with"
                                 />
                             </div>
                         </div>
 
-                        {/* Password Field */}
-                        <div className="space-y-2 group">
-                            <div className="flex justify-between items-center px-1">
-                                <label className="text-sm font-bold text-[#0B3D2E] transition-colors group-focus-within:text-[#082d22]">
-                                    كلمة المرور
-                                </label>
-                                <Link href="/forgot-password" onClick={(e) => e.stopPropagation()} className="text-xs font-bold text-[#E5B869] hover:text-[#0B3D2E] transition-colors">
-                                    نسيت كلمة المرور؟
-                                </Link>
-                            </div>
-                            <div className="relative flex items-center transition-all duration-300 transform group-focus-within:scale-[1.01]">
-                                <div className="absolute right-4 text-gray-400 group-focus-within:text-[#0B3D2E] transition-colors z-10">
-                                    <FiLock className="w-5 h-5" />
+                        {/* Divider & Email Form - Only show if user might have an account */}
+                        {hasEmailAccount && (
+                            <>
+                                <div className="relative py-4">
+                                    <div className="absolute inset-0 flex items-center">
+                                        <div className="w-full border-t border-gray-200"></div>
+                                    </div>
+                                    <div className="relative flex justify-center text-sm">
+                                        <span className="px-4 bg-white text-gray-400 font-medium">أو عبر البريد الإلكتروني</span>
+                                    </div>
                                 </div>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    onFocus={() => setIsFocused('password')}
-                                    onBlur={() => setIsFocused(null)}
-                                    required
-                                    placeholder="••••••••"
-                                    className={`w-full pr-12 pl-4 py-4 bg-gray-50/50 border-2 rounded-2xl focus:outline-none transition-all outline-none ${isFocused === 'password' ? 'border-[#0B3D2E] bg-white shadow-xl shadow-[#0B3D2E]/5' : 'border-gray-200 hover:border-gray-300'}`}
-                                    dir="rtl"
-                                />
-                            </div>
-                        </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="relative w-full overflow-hidden bg-[#0B3D2E] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#082d22] transition-colors disabled:opacity-70 disabled:cursor-not-allowed group shadow-xl shadow-green-900/20"
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <form onSubmit={handleSubmit} className="space-y-5 pt-4">
+                                        <div className="space-y-2 group">
+                                            <label className="block text-sm font-bold text-[#0B3D2E] mr-1">
+                                                البريد الإلكتروني
+                                            </label>
+                                            <div className="relative flex items-center transition-all duration-300 transform group-focus-within:scale-[1.01]">
+                                                <div className="absolute right-4 text-gray-400 group-focus-within:text-[#0B3D2E] z-10">
+                                                    <FiMail className="w-5 h-5" />
+                                                </div>
+                                                <input
+                                                    type="email"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    onFocus={() => setIsFocused('email')}
+                                                    onBlur={() => setIsFocused(null)}
+                                                    required
+                                                    placeholder="your@email.com"
+                                                    className={`w-full pr-12 pl-4 py-3.5 bg-gray-50/50 border-2 rounded-2xl focus:outline-none transition-all ${isFocused === 'email' ? 'border-[#0B3D2E] bg-white shadow-lg' : 'border-gray-100 hover:border-gray-200'}`}
+                                                    dir="rtl"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2 group">
+                                            <div className="flex justify-between items-center px-1">
+                                                <label className="text-sm font-bold text-[#0B3D2E]">
+                                                    كلمة المرور
+                                                </label>
+                                                <Link href="/forgot-password" className="text-xs font-bold text-[#E5B869] hover:text-[#0B3D2E] transition-colors">
+                                                    نسيتِ كلمة المرور؟
+                                                </Link>
+                                            </div>
+                                            <div className="relative flex items-center transition-all duration-300 transform group-focus-within:scale-[1.01]">
+                                                <div className="absolute right-4 text-gray-400 group-focus-within:text-[#0B3D2E] z-10">
+                                                    <FiLock className="w-5 h-5" />
+                                                </div>
+                                                <input
+                                                    type="password"
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    onFocus={() => setIsFocused('password')}
+                                                    onBlur={() => setIsFocused(null)}
+                                                    required
+                                                    placeholder="••••••••"
+                                                    className={`w-full pr-12 pl-4 py-3.5 bg-gray-50/50 border-2 rounded-2xl focus:outline-none transition-all ${isFocused === 'password' ? 'border-[#0B3D2E] bg-white shadow-lg' : 'border-gray-100 hover:border-gray-200'}`}
+                                                    dir="rtl"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            disabled={loading}
+                                            className="relative w-full overflow-hidden bg-[#0B3D2E] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#082d22] transition-colors disabled:opacity-70 group shadow-xl"
+                                        >
+                                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                                            {loading ? (
+                                                <span className="flex items-center justify-center gap-3">
+                                                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                                    جاري الدخول...
+                                                </span>
+                                            ) : (
+                                                "دخول البريد الإلكتروني"
+                                            )}
+                                        </button>
+                                    </form>
+                                </motion.div>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Footer Info */}
+                    <div className="mt-12 p-6 bg-[#0B3D2E]/5 rounded-2xl border border-[#0B3D2E]/10 text-center">
+                        <p className="text-gray-600 font-medium">
+                            ليس لديكِ حساب حتى الآن؟
+                        </p>
+                        <Link
+                            href="/register"
+                            onClick={() => {
+                                localStorage.setItem("hasEmailAccount", "true");
+                                setHasEmailAccount(true);
+                            }}
+                            className="mt-2 inline-flex items-center gap-2 text-[#0B3D2E] hover:text-[#E5B869] font-bold transition-all hover:translate-x-1"
                         >
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                            {loading ? (
-                                <span className="flex items-center justify-center gap-3">
-                                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                                    جاري الدخول...
-                                </span>
-                            ) : (
-                                "دخول"
-                            )}
-                        </button>
-                    </form>
-
-                    <div className="mt-8 flex items-center gap-4">
-                        <div className="flex-1 h-px bg-gray-200"></div>
-                        <span className="text-gray-500 font-medium text-sm">أو الدخول بواسطة</span>
-                        <div className="flex-1 h-px bg-gray-200"></div>
-                    </div>
-
-                    <div className="mt-8 flex justify-center w-full">
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={() => showToast("فشل تسجيل الدخول بواسطة جوجل", "error")}
-                            useOneTap
-                            shape="pill"
-                            theme="outline"
-                            text="continue_with"
-                        />
-                    </div>
-
-                    <p className="mt-10 text-center text-gray-600 font-medium">
-                        ليس لديك حساب؟{" "}
-                        <Link href="/register" className="text-[#0B3D2E] hover:text-[#E5B869] font-bold transition-colors underline underline-offset-4">
-                            سجل الآن
+                            <FiUserPlus className="w-5 h-5" />
+                            انضمي إلينا وسجلي حساباً جديداً
                         </Link>
-                    </p>
+                    </div>
+
                 </div>
             </div >
         </div >

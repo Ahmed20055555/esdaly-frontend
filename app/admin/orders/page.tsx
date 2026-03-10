@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FiEye, FiEdit } from "react-icons/fi";
+import { FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "../../../lib/api";
 
@@ -30,6 +30,30 @@ export default function AdminOrders() {
       console.error('Error fetching orders:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteOrder = async (id: string) => {
+    if (!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/orders/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert('تم حذف الطلب بنجاح');
+        setOrders(orders.filter((order: any) => order._id !== id));
+      } else {
+        alert(data.message || 'حدث خطأ أثناء حذف الطلب');
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      alert('حدث خطأ أثناء حذف الطلب');
     }
   };
 
@@ -119,6 +143,12 @@ export default function AdminOrders() {
                         className="text-green-600 hover:text-green-900 p-2 hover:bg-green-50 rounded-lg"
                       >
                         <FiEdit className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteOrder(order._id)}
+                        className="text-red-600 hover:text-red-900 p-2 hover:bg-red-50 rounded-lg"
+                      >
+                        <FiTrash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </td>

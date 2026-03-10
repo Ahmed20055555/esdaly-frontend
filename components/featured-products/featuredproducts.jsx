@@ -35,7 +35,32 @@ export default function FeaturedProducts() {
     fetchFeatured();
   }, []);
 
-  if (loading || products.length === 0) return null;
+  if (loading) {
+    return (
+      <section className="py-10 sm:py-14 bg-white border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-8">
+            <div className="h-8 w-40 bg-gray-100 rounded animate-pulse"></div>
+            <div className="h-6 w-24 bg-gray-100 rounded animate-pulse"></div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
+                <div className="aspect-square bg-gray-200 animate-pulse"></div>
+                <div className="p-3 space-y-2">
+                  <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-5 w-20 bg-gray-200 rounded animate-pulse mt-2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (products.length === 0) return null;
 
   return (
     <section className="py-10 sm:py-14 bg-white border-y border-gray-100">

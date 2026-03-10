@@ -27,7 +27,25 @@ export default function CategoriesStrip() {
     fetchCategories();
   }, []);
 
-  if (loading || categories.length === 0) return null;
+  if (loading) {
+    return (
+      <section className="py-8 sm:py-10 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-8 w-48 bg-gray-100 rounded-lg mx-auto mb-8 animate-pulse"></div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="flex flex-col items-center p-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 animate-pulse mb-3"></div>
+                <div className="h-4 w-16 bg-gray-100 rounded animate-pulse"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (categories.length === 0) return null;
 
   return (
     <section className="py-8 sm:py-10 md:py-12 bg-white border-b border-gray-100">

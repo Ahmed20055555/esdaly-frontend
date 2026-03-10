@@ -14,6 +14,14 @@ export const getImageUrl = (imagePath: string | undefined | null): string => {
     return imagePath;
   }
 
+  // معالجة المسارات المطلقة المحتملة (مثل مسارات ويندوز في قاعدة البيانات)
+  if (imagePath.includes('\\') || imagePath.match(/[a-zA-Z]:/)) {
+    const uploadMatch = imagePath.match(/[\/\\]uploads[\/\\].+$/);
+    if (uploadMatch) {
+      imagePath = uploadMatch[0].replace(/\\/g, '/');
+    }
+  }
+
   // الحصول على API URL من متغيرات البيئة
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005';
   const baseUrl = API_URL.replace('/api', ''); // إزالة /api إذا كان موجوداً

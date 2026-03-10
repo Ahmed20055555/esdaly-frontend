@@ -68,7 +68,7 @@ export default function Navbar() {
     { name: 'الأكثر مبيعاً', href: '/bestsellers' },
     { name: 'من نحن', href: '/about' },
     { name: 'اتصل بنا', href: '/contact' },
-    { name: 'لوحه التحكم', href: '/admin' },
+    // { name: 'لوحه التحكم', href: '/admin' },
   ];
 
   return (

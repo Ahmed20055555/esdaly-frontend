@@ -102,6 +102,7 @@ export default function EditProductPage() {
       }
       formDataToSend.append('isActive', formData.isActive.toString());
       formDataToSend.append('isFeatured', formData.isFeatured.toString());
+      formDataToSend.append('existingImages', JSON.stringify(existingImages));
 
       // Add new images
       images.forEach((image) => {

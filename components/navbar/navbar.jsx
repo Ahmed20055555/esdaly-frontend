@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FiShoppingCart, FiHeart, FiSearch, FiUser, FiLogOut, FiPackage } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import InstallPWAButton from "../pwa-install/install-button";
 
 export default function Navbar() {
   const router = useRouter();
@@ -139,6 +140,7 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-2">
+            <InstallPWAButton />
             {/* User Menu */}
             {user ? (
               <div className="hidden md:flex items-center gap-3">

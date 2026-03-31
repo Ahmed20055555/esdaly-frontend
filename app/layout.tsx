@@ -1,5 +1,4 @@
-
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cairo } from 'next/font/google'
 import './globals.css'
 import ReduxProvider from '@/store/provider'
@@ -14,6 +13,21 @@ const cairo = Cairo({ subsets: ['arabic', 'latin'] })
 export const metadata: Metadata = {
     title: 'Esdaly',
     description: 'Esdaly Store',
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "default",
+        title: "Esdaly",
+    },
+    formatDetection: {
+        telephone: false,
+    },
+}
+
+export const viewport: Viewport = {
+    themeColor: '#0B3D2E',
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
 }
 
 export default function RootLayout({

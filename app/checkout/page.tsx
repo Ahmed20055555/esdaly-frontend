@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "@/store/slices/cartSlice";
+import { clearCart, removeFromCart } from "@/store/slices/cartSlice";
 import { ordersAPI, authAPI } from "@/lib/api";
 import { FiMapPin, FiCreditCard, FiUser, FiPhone, FiMail, FiLock } from "react-icons/fi";
 import { getFirstImageUrl } from "@/lib/imageUtils";

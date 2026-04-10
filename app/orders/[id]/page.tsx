@@ -5,6 +5,7 @@ import { FiPackage, FiTruck, FiMapPin, FiCreditCard, FiCheckCircle, FiArrowRight
 import Image from "next/image";
 import Link from "next/link";
 import { ordersAPI } from "@/lib/api";
+import { getFirstImageUrl } from "@/lib/imageUtils";
 import Breadcrumbs from "@/components/breadcrumbs/breadcrumbs";
 
 export default function OrderStatusPage() {
@@ -112,7 +113,7 @@ export default function OrderStatusPage() {
                                     <div key={idx} className="p-6 flex items-center gap-4">
                                         <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-gray-100">
                                             {item.image ? (
-                                                <Image src={item.image} alt={item.name} fill className="object-cover" />
+                                                <img src={getFirstImageUrl(item.image)} alt={item.name} className="object-cover w-full h-full rounded-xl" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-gray-400">
                                                     <FiPackage className="w-8 h-8" />

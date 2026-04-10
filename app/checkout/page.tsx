@@ -190,6 +190,7 @@ export default function CheckoutPage() {
       if (response.success) {
         // Clear cart only if NOT test mode
         dispatch(clearCart());
+        localStorage.removeItem("cart"); // 🔴 أضفت هذه لتفريغ السلة من الذاكرة المحلية 
 
         // direct to order confirmation
         router.push(`/orders/${response.order._id}`);
@@ -212,6 +213,20 @@ export default function CheckoutPage() {
         errorMessage = isDev
           ? "لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تسجيل الدخول كـ User"
           : "لا يمكن الاتصال بالخادم. يرجى المحاولة مرة أخرى.";
+      } else if (error.data && error.data.errorCode === 'INSUFFICIENT_STOCK') {
+        // 🔴 حذف المنتج المنتهي من السلة تلقائياً
+        const pid = error.data.productId;
+        dispatch(removeFromCart(pid));
+
+        // تحديث الـ localStorage للحفاظ على السلة نظيفة
+        const currentCartStr = localStorage.getItem("cart");
+        if (currentCartStr) {
+          const currentCart = JSON.parse(currentCartStr);
+          const newCart = currentCart.filter((item: any) => item.id !== pid);
+          localStorage.setItem("cart", JSON.stringify(newCart));
+        }
+
+        errorMessage = error.message + " - تم حذفه من السلة تلقائياً.";
       } else if (error.message?.includes('401') || error.message?.includes('unauthorized')) {
         errorMessage = "انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى";
         localStorage.removeItem("token");
@@ -507,15 +522,10 @@ export default function CheckoutPage() {
                     <div key={item.id} className="flex items-center gap-3 text-sm">
                       <div className="relative w-16 h-16 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
                         {imageUrl && imageUrl !== '/placeholder.jpg' ? (
-                          <Image
+                          <img
                             src={imageUrl}
                             alt={item.name}
-                            fill
-                            className="object-cover rounded-lg"
-                            unoptimized
-                            onError={(e) => {
-                              console.error('Image load error:', imageUrl);
-                            }}
+                            className="object-cover rounded-lg w-full h-full"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">

@@ -69,7 +69,9 @@ const apiRequest = async (
         data
       });
 
-      throw new Error(errorMessage);
+      const err = new Error(errorMessage) as any;
+      err.data = data;
+      throw err;
     }
 
     return data;

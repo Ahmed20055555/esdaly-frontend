@@ -1,5 +1,6 @@
 // API Configuration (يُستخدم محلياً وعند الرفع حسب NEXT_PUBLIC_API_URL)
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api';
+console.log('📡 API Initialized with URL:', API_URL);
 /** رابط الـ API للاستخدام في fetch (مثلاً في الأدمن) */
 export const API_BASE_URL = API_URL;
 /** أصل الخادم بدون /api (لصور المنتجات) */

@@ -23,7 +23,7 @@ export const getImageUrl = (imagePath: string | undefined | null): string => {
   }
 
   // الحصول على API URL من متغيرات البيئة
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://esdaly-backend.vercel.app/api';
   const baseUrl = API_URL.replace('/api', ''); // إزالة /api إذا كان موجوداً
 
   // إذا كان مسار نسبي يبدأ بـ /

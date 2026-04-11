@@ -211,7 +211,7 @@ export default function CheckoutPage() {
       if (error.message?.includes('network') || error.message?.includes('fetch') || error.message?.includes('Failed to fetch')) {
         const isDev = process.env.NODE_ENV === 'development';
         errorMessage = isDev
-          ? "لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على http://localhost:5005\n2. تسجيل الدخول كـ User"
+          ? "لا يمكن الاتصال بالخادم. تأكد من:\n1. تشغيل Backend على https://esdaly-backend.vercel.app/api\n2. تسجيل الدخول كـ User"
           : "لا يمكن الاتصال بالخادم. يرجى المحاولة مرة أخرى.";
       } else if (error.data && error.data.errorCode === 'INSUFFICIENT_STOCK') {
         // 🔴 حذف المنتج المنتهي من السلة تلقائياً

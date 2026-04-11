@@ -50,7 +50,7 @@ export default function NewCategoryPage() {
         formDataToSend.append('image', imageFile);
       }
 
-      const response = await fetch('' + (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005/api').replace('/api', '') + '/api/categories', {
+      const response = await fetch('' + (process.env.NEXT_PUBLIC_API_URL || 'https://esdaly-backend.vercel.app/api').replace('/api', '') + '/api/categories', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
